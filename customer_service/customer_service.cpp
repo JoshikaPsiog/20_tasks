@@ -12,9 +12,8 @@ void log(const string& issue){
     file.close();
 }
 void feedback(){
-    cout<<"dummy feedback";
+    cout<<"please give us your feedback";
 }
-
 void questions(){
     char input;
     cout<<"is it a sales issue(y/n)?";
@@ -67,7 +66,6 @@ int main(){
         cout<<"please give us ur feedback\n";
         feedback();
    }
-
 else if(input=='n'||input=='N'){
     questions();
    }

@@ -17,12 +17,10 @@ struct Student {
     bool hasExtraCredits = false;
     string extraCourse;
 };
-
 void clearLine() {
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
-
 bool askYesNo(const string& prompt) {
     char c;
     while (true) {
@@ -41,14 +39,12 @@ string askLine(const string& prompt) {
     getline(cin, s);
     return s;
 }
-
 void Registration(Student& s) {
     s.name    = askLine("Enter student name: ");
     s.program = askLine("Enter Department: ");
     cout << "Form completed and sent to department.\n";
     cout << "Student info stored in DB.\n";
 }
-
 void AdmissionOffice(Student& s) {
     do {
         s.verified = askYesNo("Are details verified?");
@@ -60,7 +56,6 @@ void AdmissionOffice(Student& s) {
     } while (!s.verified);
     cout << "Details verified.\n";
 }
-
 void Visa(Student& s) {
     s.needsVisa = askYesNo("Need visa?");
     if (s.needsVisa) {
@@ -72,7 +67,6 @@ void Visa(Student& s) {
         cout << "Visa process done.\n";
     }
 }
-
 void Fee(Student& s) {
     while (!s.feePaid) {
         s.feePaid = askYesNo("Fee paid?");
@@ -80,7 +74,6 @@ void Fee(Student& s) {
     }
     cout << "Fee payment confirmed.\n";
 }
-
 void Accommodation(Student& s) {
     s.wantsAccommodation = askYesNo("Need accommodation?");
     if (s.wantsAccommodation) {
@@ -90,7 +83,6 @@ void Accommodation(Student& s) {
         cout << "No accommodation requested.\n";
     }
 }
-
 void Tutor(Student& s) {
     s.tutor = askLine("Assign tutor name: ");
     cout << "Student meets tutor " << s.tutor << "\n";
