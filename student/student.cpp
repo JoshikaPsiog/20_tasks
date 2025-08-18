@@ -43,7 +43,6 @@ string askLine(const string& prompt) {
 }
 
 void Registration(Student& s) {
-    cout << "\n--- Registration ---\n";
     s.name    = askLine("Enter student name: ");
     s.program = askLine("Enter Department: ");
     cout << "Form completed and sent to department.\n";
@@ -51,7 +50,6 @@ void Registration(Student& s) {
 }
 
 void AdmissionOffice(Student& s) {
-    cout << "\n--- Admission Office ---\n";
     do {
         s.verified = askYesNo("Are details verified?");
         if (!s.verified) {
@@ -64,7 +62,6 @@ void AdmissionOffice(Student& s) {
 }
 
 void Visa(Student& s) {
-    cout << "\n--- Visa ---\n";
     s.needsVisa = askYesNo("Need visa?");
     if (s.needsVisa) {
         cout << "Inform student for visa application.\n";
@@ -77,7 +74,6 @@ void Visa(Student& s) {
 }
 
 void Fee(Student& s) {
-    cout << "\n--- Tuition Fee ---\n";
     while (!s.feePaid) {
         s.feePaid = askYesNo("Fee paid?");
         if (!s.feePaid) cout << "Waiting for payment...\n";
@@ -86,7 +82,6 @@ void Fee(Student& s) {
 }
 
 void Accommodation(Student& s) {
-    cout << "\n--- Accommodation ---\n";
     s.wantsAccommodation = askYesNo("Need accommodation?");
     if (s.wantsAccommodation) {
         s.accommodation = askLine("Assign accommodation (room/hostel): ");
@@ -97,12 +92,10 @@ void Accommodation(Student& s) {
 }
 
 void Tutor(Student& s) {
-    cout << "\n--- Tutor ---\n";
     s.tutor = askLine("Assign tutor name: ");
     cout << "Student meets tutor " << s.tutor << "\n";
 }
 void ExtraCourse(Student& s) {
-    cout << "\n--- Extra Course ---\n";
     s.hasExtraCredits = askYesNo("Has extra credits?");
     if (s.hasExtraCredits) {
         s.extraCourse = askLine("Choose extra course: ");
@@ -110,7 +103,6 @@ void ExtraCourse(Student& s) {
     }
 }
 void FullyRegistered(Student& s) {
-    cout << "\n--- Fully Registered ---\n";
     cout << s.name << " (" << s.program << ") registration complete.\n";
     cout << "Summary:\n";
     cout << "Verified: " << (s.verified ? "Yes" : "No") << "\n";

@@ -16,7 +16,6 @@ int main() {
         int input = loop(); 
         if (input) {
             nurse();
-            // doctor();
             assign();
         }
         else {
