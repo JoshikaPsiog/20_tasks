@@ -1,100 +1,129 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
+#include <map>
 using namespace std;
 
-struct User {
-    string username;
-    string password;
-};
+map<string, string> users; 
+map<string, bool> cars;      
+string adminPassword = "admin123";
 
-vector<User> loadUsers(const string &filename) {
-    vector<User> users;
-    ifstream file(filename);
-    string line, uname, pass;
+void updateCarLibrary() {
+    int choice;
+    cout << "1. Add Car\n2. Remove Car\n3. Show Cars\nChoice: ";
+    cin >> choice;
+    if (choice == 1) {
+        string car;
+        cout << "Enter car name to add: ";
+        cin >> car;
+        cars[car] = true;
+        cout << car << " added successfully.\n";
+    } else if (choice == 2) {
+        string car;
+        cout << "Enter car name to remove: ";
+        cin >> car;
+        if (cars.erase(car))
+            cout << car << " removed successfully.\n";
+        else
+            cout << "Car not found.\n";
+    } else if (choice == 3) {
+        cout << "\nAvailable Cars:\n";
+        for (auto &c : cars)
+            cout << c.first << (c.second ? " (Available)" : " (Booked)") << endl;
+    }
+}
+void answerEnquiries() {
+    cout << "Example: How many cars available?\n";
+    cout << "Currently available cars:\n";
+    for (auto &c : cars)
+        if (c.second) cout << c.first << endl;
+}
+void makePayment() {
+    cout << "Payment successful\n";
+}
+void lookForCar() {
+    for (auto &c : cars)
+        if (c.second) cout << c.first << endl;
 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        getline(ss, uname, ',');
-        getline(ss, pass, ',');
-        if (!uname.empty() && !pass.empty())
-            users.push_back({uname, pass});
-    }
-    file.close();
-    return users;
-}
-void updatePassword(const string &filename, const string &uname, const string &newpass) {
-    vector<User> users = loadUsers(filename);
-    ofstream file(filename, ios::trunc);
-    for (auto &u : users) {
-        if (u.username == uname) {
-            u.password = newpass;
-        }
-        file << u.username << "," << u.password << "\n";
-    }
-    file.close();
-}
-
-bool login(vector<User> &users, string uname, string pass) {
-    for (auto &u : users) {
-        if (u.username == uname && u.password == pass) {
-            return true;
-        }
-    }
-    return false;
-}
-int main() {
-    string dbFile = "users.csv";
-    vector<User> users = loadUsers(dbFile);
-    cout << "Are you Admin (A) or Registered User (R)? : ";
-    char choice;
+    string choice;
+    cout << "Enter car to book: ";
     cin >> choice;
 
-    if (choice == 'A' || choice == 'a') {
-        string uname, pass;
-        cout << "Enter Admin username: ";
-        cin >> uname;
-        cout << "Enter Admin password: ";
-        cin >> pass;
-
-        if (login(users, uname, pass) && uname == "admin") {
-            cout << "Admin login successful!\n";
-            cout << "Admin can update all data here...\n";
-        } else {
-            cout << "Admin login failed.\n";
-        }
+    if (cars.find(choice) != cars.end() && cars[choice]) {
+        cars[choice] = false;
+        cout << choice << " booked successfully!\n";
+        makePayment();
+    } else {
+        cout << "Car not available.\n";
     }
-    else if (choice == 'R' || choice == 'r') {
-        string uname, pass;
-        cout << "Enter Username: ";
-        cin >> uname;
-        cout << "Enter Password: ";
-        cin >> pass;
+}
+void userLogin() {
+    int choice;
+    cout << "\n1. Register\n2. Login\nChoice: ";
+    cin >> choice;
 
-        if (login(users, uname, pass)) {
-            cout << "User login successful!\n";
-            cout << "Welcome, " << uname << "!\n";
+    if (choice == 1) {
+        string u, p;
+        cout << "Enter new username: "; cin >> u;
+        cout << "Enter new password: "; cin >> p;
+        users[u] = p;
+        cout << "User registered successfully!\n";
+    } else if (choice == 2) {
+        string u, p;
+        cout << "Enter username: "; cin >> u;
+        cout << "Enter password: "; cin >> p;
+
+        if (users.count(u) && users[u] == p) {
+            cout << "Login successful!\n";
+            lookForCar();
         } else {
-            cout << "Invalid credentials!\n";
-            cout << "Forgot Password? (Y/N): ";
-            char fp;
-            cin >> fp;
-            if (fp == 'Y' || fp == 'y') {
-                string newpass;
-                cout << "Enter new password: ";
-                cin >> newpass;
-                updatePassword(dbFile, uname, newpass);
-                cout << "Password updated successfully!\n";
-            } else {
-                cout << "Returning to main menu...\n";
+            cout << "Invalid login. Forgot password? (y/n): ";
+            char ans; cin >> ans;
+            if (ans == 'y') {
+                cout << "Enter new password: "; cin >> p;
+                users[u] = p;
+                cout << "Password reset successful.\n";
             }
         }
     }
-    else {
-        cout << "Invalid choice!\n";
-    }
+}
 
+void adminLogin() {
+    string pwd;
+    cout << "Enter Admin Password: ";
+    cin >> pwd;
+
+    if (pwd == adminPassword) {
+        cout << "Admin login successful.\n";
+        int choice;
+        do {
+            cout << "\n--- Admin Menu ---\n";
+            cout << "1. Update Car Library\n2. Answer Customer Enquiries\n3. Logout\nChoice: ";
+            cin >> choice;
+            switch (choice) {
+                case 1: updateCarLibrary(); break;
+                case 2: answerEnquiries(); break;
+                case 3: cout << "Logging out...\n"; break;
+                default: cout << "Invalid choice.\n";
+            }
+        } while (choice != 3);
+    } else {
+        cout << "Invalid Admin password!\n";
+    }
+}
+
+int main() {
+    cars["BMW"] = true;
+    cars["Audi"] = true;
+    cars["Tesla"] = true;
+
+    int role;
+    do {
+        cout << "1. Admin Login\n2. User Login\n3. Exit\nChoice: ";
+        cin >> role;
+        if (role == 1) adminLogin();
+        else if (role == 2) userLogin();
+        else if (role == 3) cout << "Exiting system...\n";
+        else cout << "Invalid choice.\n";
+    } while (role != 3);
     return 0;
 }
