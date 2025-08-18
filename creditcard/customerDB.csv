@@ -1,0 +1,6 @@
+CustomerID,Name,AccountValid,CardValid,FundsAvailable
+1,josihka,1,1,1
+2,sriRam,1,1,0
+3,vaishali,0,1,1
+4,jaisree,1,0,1
+5,subha,0,1,2
