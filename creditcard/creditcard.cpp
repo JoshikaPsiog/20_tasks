@@ -35,6 +35,7 @@ void processTransaction(string id, string name, bool accountValid, bool cardVali
 
 int main() {
     ifstream file("customerDB.csv");
+    cout<<"order placed by user";
     if (!file.is_open()) {
         cout << "Error: Could not open customerDB.csv\n";
         return 1;

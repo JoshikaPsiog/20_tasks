@@ -5,7 +5,6 @@
 #include<fstream>
 #include <sstream>
 
-
 using namespace std;
 string adminPassword = "admin123";
 
@@ -42,7 +41,6 @@ void adminLogin(){
     int out;
     cout << "Enter Admin Password: ";
     cin >> pwd;
-
     if (pwd == adminPassword) {
         cout << "Admin login successful.\n";
         cout<<"choose the application\n";
@@ -60,27 +58,23 @@ void adminLogin(){
         }
     }
 }
-
 map<string, string> users;
-
 void loadUsersFromCSV() {
     ifstream file("user_data.csv");
     string line;
     while (getline(file, line)) {
         stringstream ss(line);
         string username, password, action, timestamp;
-        getline(ss, username, ',');
+        getline(ss, username, ',\n');
         getline(ss, password, ',');
         getline(ss, action, ',');
         getline(ss, timestamp, ',');
-
         if (action == "Registered" || action == "Password Reset") {
             users[username] = password;
         }
     }
     file.close();
 }
-
 void logToCSV(const string& username, const string& password, const string& action) {
     ofstream file("user_data.csv", ios::app);
     time_t now = time(0);
@@ -89,11 +83,8 @@ void logToCSV(const string& username, const string& password, const string& acti
     file << username << "," << password << "," << action << "," << dt << "\n";
     file.close();
 }
-
-
 void userLogin() {
     loadUsersFromCSV();
-
     int choice;
     cout << "\n1. Register\n2. Login\nChoice: ";
     cin >> choice;
